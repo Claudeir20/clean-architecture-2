@@ -25,7 +25,7 @@ class User:
             raise PermissionError("Apenas administradores podem gerenciar produtos")
         return True
     
-    def can_view_orders(self) -> bool:
+    def can_view_orders(self, order_owner_id) -> bool:
         """Regra de negóco: Usuario pode ver o pedido ser for o dono"""
         return self.id == order_owner_id or self.is_admin()
     

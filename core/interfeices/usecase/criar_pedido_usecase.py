@@ -1,8 +1,10 @@
 from core.domain.entities.order import Order
 from core.domain.repositories.order_repository import OrderRepository
 from core.domain.entities.product import Product
+from core.domain.entities.user import User
 from dataclasses import dataclass
 from typing import List
+from builtins import PermissionError
 
 @dataclass
 class CreateOrderRequest:
@@ -87,22 +89,31 @@ class ListOrderUseCase:
         """
         self.order_repository = order_repository
     
-    def execute(self, request: ListOrdersRequest) -> ListOrdersResponse:
+    def execute(self, request: ListOrdersRequest, current_user: User) -> ListOrdersResponse:
         """
-        Executa a listagem de pedidos com base nos parâmetros de entrada.
+    Executa a listagem de pedidos com base nos parâmetros de entrada e na regra de acesso.
 
-        Args:
-            request (ListOrdersRequest): Parâmetros de paginação e filtro.
+    Args:
+        request (ListOrdersRequest): Parâmetros de paginação e filtro.
+        current_user (User): Usuário que está tentando visualizar os pedidos.
 
-        Returns:
-            ListOrdersResponse: Lista de pedidos e metadados de paginação.
+    Returns:
+        ListOrdersResponse: Lista de pedidos visíveis ao usuário e metadados de paginação.
+
+    Raises:
+        PermissionError: Se o usuário tentar acessar pedidos que não tem permissão para ver.
         """
         orders_domain, total_items = self.order_repository.get_all_paginated_filtered(
             offset=request.offset,
             limit=request.limit,
             search_query=request.search_query
         )
-
+        
+        visible_orders = [
+            order for order in orders_domain
+            if current_user.can_view_orders(order.owner)
+]
+        
         orders_response = [
             CreateOrderResponse(
                 order_id=order.order_id,
@@ -110,12 +121,12 @@ class ListOrderUseCase:
                 product=order.product.name,
                 quantity=order.quantity,
                 subtotal=order.get_subtotal()
-            ) for order in orders_domain
+            ) for order in visible_orders
         ]
 
         return ListOrdersResponse(
             orders=orders_response,
-            total_items=total_items,
+            total_items=len (visible_orders),
             offset=request.offset,
             limit=request.limit
         )

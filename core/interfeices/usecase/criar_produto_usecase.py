@@ -1,6 +1,9 @@
 from core.domain.entities.product import Product
+from core.domain.entities.user import User
 from core.domain.repositories.product_repository import ProductRepository
 from dataclasses import dataclass
+from builtins import PermissionError
+
 
 @dataclass
 class CreateProductRequest:
@@ -52,16 +55,25 @@ class CreateProductUseCase:
         Args:
             product_repository (ProductRepository): Repositório de produtos.
         """
-    def execute(self, request: CreateProductRequest) -> CreateProductResponse:
+    def execute(self, request: CreateProductRequest, current_user: User) -> CreateProductResponse:
         """
         Executa a criação de um novo produto.
 
         Args:
             request (CreateProductRequest): Dados do produto a ser criado.
+            current_user (User): Usuário que está tentando realizar a operação.
+            A regra de negócio definida na entidade User será aplicada para verificar
+            se o usuário tem permissão para gerenciar produtos (somente administradores).
 
         Returns:
             CreateProductResponse: Dados do produto criado.
+
+        Raises:
+            PermissionError: Se o usuário não tiver permissão para criar produtos
         """
+        if not current_user.can_manager_products():
+            raise PermissionError("Apenas administradores podem criar produtos.")
+        
         product = Product(
             name=request.name,
             price=request.price,
