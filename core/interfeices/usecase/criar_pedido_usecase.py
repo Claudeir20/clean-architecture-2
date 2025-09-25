@@ -120,7 +120,7 @@ class ListOrderUseCase:
                 owner=order.owner,
                 product=order.product.name,
                 quantity=order.quantity,
-                subtotal=order.get_subtotal()
+                subtotal=order.get_subtotal
             ) for order in visible_orders
         ]
 

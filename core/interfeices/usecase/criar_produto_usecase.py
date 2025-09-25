@@ -116,7 +116,7 @@ class ListProductsResponse:
         offset (int): Posição inicial da listagem.
         limit (int): Quantidade máxima de produtos retornados.
     """
-    product: list[CreateProductUseCase]
+    products: list[CreateProductResponse]
     total_items: int
     offset: int
     limit: int
