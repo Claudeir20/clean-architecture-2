@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import Mock
-from core.interfeices.usecase.criar_user_usecase import (
+from core.interfaces.usecase.criar_user_usecase import (
     CreateUserUseCase, CreateUserRequest, CreateUserResponse,
     ListUsersUseCase, ListUsersRequest, ListUsersResponse,
     GetUserByIdUseCase, GetUserByIdRequest,

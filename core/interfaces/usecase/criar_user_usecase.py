@@ -5,9 +5,11 @@ from dataclasses import dataclass
 
 @dataclass
 class CreateUserRequest:
+    id: str
     email: str
     first_name: str
     last_name: str
+    password: str
     is_active: bool = True
     is_staff: bool = False
     is_superuser: bool = False

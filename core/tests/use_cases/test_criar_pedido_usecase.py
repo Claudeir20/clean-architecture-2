@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import Mock, MagicMock
-from core.interfeices.usecase.criar_pedido_usecase import (
+from core.interfaces.usecase.criar_pedido_usecase import (
     CreateOrderUseCase, CreateOrderRequest, CreateOrderResponse,
     ListOrderUseCase, ListOrdersRequest, ListOrdersResponse
 )

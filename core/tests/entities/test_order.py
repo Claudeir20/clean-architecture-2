@@ -21,7 +21,7 @@ class TestOrder(unittest.TestCase):
         self.assertEqual(self.order.subtotal, 20.0)
 
     def test_get_subtotal_property(self):
-        # Happy path: 2 * 10.0 = 20.0
+        
         self.assertEqual(self.order.get_subtotal, 20.0)
 
     def test_get_subtotal_zero_quantity(self):
