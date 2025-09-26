@@ -1,21 +1,19 @@
+import uuid
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-import uuid
-
+from .repository import DjangoUserRepository
+from .serializers import UserSerializer, UserReadSerializer
+from .models import UserModel
 from core.interfaces.usecase.criar_user_usecase import(
     CreateUserUseCase,
     ListUsersUseCase,
     GetUserByIdRequest,
     GetUserByIdUseCase,
-    CreateUserRequest
-
+    CreateUserRequest,
+    ListUsersRequest
 )
-from core.interfaces.usecase.criar_user_usecase import ListUsersRequest
 
-from .repository import DjangoUserRepository
-from .serializers import UserSerializer, UserReadSerializer
-from .models import UserModel
 
 class UserListCreateAPIView(generics.ListCreateAPIView):
     queryset = UserModel.objects.all()
