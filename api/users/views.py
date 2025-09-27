@@ -1,7 +1,6 @@
 import uuid
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.response import Response
-from rest_framework import status
 from .repository import DjangoUserRepository
 from .serializers import UserSerializer, UserReadSerializer
 from .models import UserModel

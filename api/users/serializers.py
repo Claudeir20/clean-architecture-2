@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import UserModel
 from core.interfaces.usecase.criar_user_usecase import (
-    CreateUserRequest,
     CreateUserResponse,
 )
 

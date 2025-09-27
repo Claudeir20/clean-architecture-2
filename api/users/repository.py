@@ -17,7 +17,7 @@ class DjangoUserRepository(UserRepository):
             is_staff=user.is_staff,
             is_superuser=user.is_superuser
         )
-        model.set_password("default_password")  # ou gere uma senha segura
+        model.set_password("default_password") 
         model.save()
         return model.to_domain()
 
