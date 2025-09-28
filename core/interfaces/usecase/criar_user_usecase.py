@@ -1,7 +1,7 @@
 from core.domain.entities.user import User
 from core.domain.repositories.user_repository import UserRepository
 from dataclasses import dataclass
-
+from core.interfaces.usecase.gateways import AuthGateway
 
 @dataclass
 class CreateUserRequest:
@@ -208,3 +208,55 @@ class GetUserByEmailUseCase:
             is_staff=user.is_staff,
             is_superuser=user.is_superuser
         )
+@dataclass
+class LoginUserRequest:
+    email: str
+    password: str
+
+@dataclass
+class LoginUserResponse:
+    id: str
+    email: str
+
+class LoginUserUseCase:
+    def __init__(self, user_repository: UserRepository, auth_gateway: AuthGateway):
+        self.user_repository = user_repository
+        self.auth_gateway = auth_gateway
+    
+    def execute(self, request: LoginUserRequest) -> LoginUserResponse:
+        user = self.user_repository.get_by_email(request.email)
+        
+        if not user:
+            raise ValueError("Credenciais inválidas")
+
+        if not self.auth_gateway.check_password(user.id, request.password):
+            raise ValueError("Credenciais inválidas")           
+
+        return LoginUserResponse(
+            id=user.id,
+            email=user.email
+        )
+@dataclass
+class ChangeUserPasswordRequest:
+    user_id: str
+    old_password: str
+    new_password: str
+
+@dataclass
+class ChageUserPasswordResponse:
+    sucess: bool
+
+class ChageUserPasswordUseCase:
+    def __init__(self, user_repository: UserRepository, auth_gateway: AuthGateway):
+        self.user_repository = user_repository
+        self.auth_gateway = auth_gateway
+    
+    def execute(self, request: ChangeUserPasswordRequest) -> ChageUserPasswordResponse:
+        if not self.auth_gateway.check_password(request.user_id, request.old_password):
+            raise ValueError("Senha antiga estar incorreta")
+        
+        user = self.user_repository.get_by_id(request.user_id)
+        if not user:
+            raise ValueError("Usuário não encontrado")
+        self.auth_gateway.set_password(user.id, request.new_password)
+        return ChageUserPasswordResponse(sucess=True)

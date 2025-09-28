@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from .repository import DjangoProductRepository
 from .serializers import ProductSerializer, ProductReadSerializer
 from .models import ProductModel
+from rest_framework.permissions import IsAuthenticated
 from core.interfaces.usecase.criar_produto_usecase import(
     CreateProductUseCase,
     ListProductsUseCase,
@@ -15,6 +16,7 @@ from core.interfaces.usecase.criar_produto_usecase import(
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = ProductModel.objects.all()
+    permission_classes = [IsAuthenticated]
     
     def get_serializer_class(self):
         if self.request.method == "POST":
