@@ -8,6 +8,7 @@ class User:
     email: str = field(compare=True)
     first_name: str = field (compare=False)
     last_name: str = field (compare=False)
+    password: str
     id: str = field(default_factory=lambda: str(uuid.uuid4()), compare=True)
     is_active: bool = field(default=True, compare=False)
     is_staff: bool = field(default=False, compare=False)

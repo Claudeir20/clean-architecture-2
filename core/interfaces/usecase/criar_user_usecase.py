@@ -54,13 +54,14 @@ class CreateUserUseCase:
             email=request.email,
             first_name=request.first_name,
             last_name=request.last_name,
+            password=request.password,
             is_active=request.is_active,
             is_staff=request.is_staff,
             is_superuser=request.is_superuser,
         )
-
-        crated_user_response = self.user_repositor.create(user)
         
+        crated_user_response = self.user_repositor.create(user)
+
         return CreateUserResponse(
             id=crated_user_response.id,
             email=crated_user_response.email,
@@ -219,6 +220,7 @@ class LoginUserResponse:
     email: str
     access_token: str
     refresh_token: str
+
 
 class LoginUserUseCase:
     def __init__(self, user_repository: UserRepository, auth_gateway: AuthGateway):

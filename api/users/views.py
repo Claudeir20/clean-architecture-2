@@ -3,6 +3,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from .repository import DjangoUserRepository
 from .serializers import UserSerializer, UserReadSerializer
+from rest_framework.permissions import IsAdminUser
 from .models import UserModel
 from core.interfaces.usecase.criar_user_usecase import(
     CreateUserUseCase,
@@ -16,6 +17,7 @@ from core.interfaces.usecase.criar_user_usecase import(
 
 class UserListCreateAPIView(generics.ListCreateAPIView):
     queryset = UserModel.objects.all()
+    permission_classes = [IsAdminUser]
 
     def get_serializer_class(self):
         if self.request.method == "POST":
@@ -56,6 +58,7 @@ class UserListCreateAPIView(generics.ListCreateAPIView):
 class UserRetriveAPIView(generics.RetrieveAPIView):
     serializer_class = UserReadSerializer
     queryset = UserModel.objects.all()
+    permission_classes = [IsAdminUser]
 
     def retrieve(self, request, *args, **kwargs):
         user_id = kwargs['pk']

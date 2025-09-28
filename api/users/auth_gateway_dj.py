@@ -33,7 +33,7 @@ class DjangoAuthGateway(AuthGateway):
             raise ValueError("Usuário não encontrado")
             
         try:
-            application = Application.objects.get(name= "Default Application")
+            application = Application.objects.get(name="Default Application")
         except Application.DoesNotExist:
             application = Application.objects.create(
                 name="Default Application",

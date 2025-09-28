@@ -2,7 +2,6 @@ from .serializers import LoginRequestSerializer, LoginResponseSerializer
 from core.interfaces.usecase.criar_user_usecase import(
     LoginUserRequest,
     LoginUserUseCase
-    
 )
 from .repository import DjangoUserRepository
 from .auth_gateway_dj import DjangoAuthGateway

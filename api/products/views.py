@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from .repository import DjangoProductRepository
 from .serializers import ProductSerializer, ProductReadSerializer
 from .models import ProductModel
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from core.interfaces.usecase.criar_produto_usecase import(
     CreateProductUseCase,
     ListProductsUseCase,
@@ -13,15 +13,14 @@ from core.interfaces.usecase.criar_produto_usecase import(
     GetProductByIdRequest,
     ListProductsRequest
 )
-
-class ProductListCreateAPIView(generics.ListCreateAPIView):
+class ProductListAPIView(generics.ListAPIView):
     queryset = ProductModel.objects.all()
     permission_classes = [IsAuthenticated]
     
     def get_serializer_class(self):
-        if self.request.method == "POST":
-            return ProductSerializer
-        return ProductReadSerializer
+        if self.request.method == "GET":
+            return ProductReadSerializer
+        return True
     
     def get(self, request):
         repo = DjangoProductRepository()
@@ -32,7 +31,19 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
         
         serializer = self.get_serializer(response_data.products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+class ProductCreateAPIView(generics.CreateAPIView):
+    queryset = ProductModel.objects.all()
+    permission_classes = [IsAdminUser]
     
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return ProductSerializer
+        return ProductReadSerializer
+    
+
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -49,7 +60,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
 
 class ProductRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = ProductReadSerializer
-    
+    permission_classes = [IsAdminUser]
     def retrieve(self, request, *args, **kwargs):
         product_id = kwargs['pk']
         get_product_request = GetProductByIdRequest(product_id= str(product_id))
