@@ -30,10 +30,16 @@ INSTALLED_APPS = [
     'api.users',
     'api.products',
     'api.orders',
-    'rest_framework'
+    'rest_framework',
+    'oauth2_provider',
 ]
 
 AUTH_USER_MODEL = "users.UserModel"
+
+OAUTH2_PROVIDER = {
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 3600,  # 1 hora
+    'REFRESH_TOKEN_EXPIRE_SECONDS': 86400,  # 1 dia (opcional)
+}
 
 
 MIDDLEWARE = [

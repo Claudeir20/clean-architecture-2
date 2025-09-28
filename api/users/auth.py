@@ -18,7 +18,7 @@ class LoginAPIView(APIView):
             email=serializer.validated_data["email"],
             password=serializer.validated_data["password"],
         )
-        
+
         user_repository = DjangoUserRepository()
         auth_gateway = DjangoAuthGateway()
         use_case = LoginUserUseCase(user_repository, auth_gateway)

@@ -217,6 +217,8 @@ class LoginUserRequest:
 class LoginUserResponse:
     id: str
     email: str
+    access_token: str
+    refresh_token: str
 
 class LoginUserUseCase:
     def __init__(self, user_repository: UserRepository, auth_gateway: AuthGateway):
@@ -230,12 +232,17 @@ class LoginUserUseCase:
             raise ValueError("Credenciais inválidas")
 
         if not self.auth_gateway.check_password(user.id, request.password):
-            raise ValueError("Credenciais inválidas")           
-
+            raise ValueError("Credenciais inválidas")
+        
+        access_token, refresh_token = self.auth_gateway.create_tokens(user.id)
+        
         return LoginUserResponse(
             id=user.id,
-            email=user.email
+            email=user.email,
+            access_token=access_token,
+            refresh_token=refresh_token
         )
+        
 @dataclass
 class ChangeUserPasswordRequest:
     user_id: str

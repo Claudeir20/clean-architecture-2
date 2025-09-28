@@ -69,9 +69,13 @@ class LoginRequestSerializer(serializers.Serializer):
 class LoginResponseSerializer(serializers.Serializer):
     id = serializers.CharField(read_only=True)
     email = serializers.EmailField(read_only=True)
+    access_token = serializers.CharField(read_only=True)
+    refresh_token = serializers.CharField(read_only=True)
     
     def to_representation(self, instance: LoginUserResponse):
         return {
             "id": instance.id,
             "email": instance.email,
+            "access_token": instance.access_token,
+            "refresh_token": instance.refresh_token,
         }
