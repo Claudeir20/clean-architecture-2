@@ -8,8 +8,10 @@ from .auth_gateway_dj import DjangoAuthGateway
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 
 class LoginAPIView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         serializer = LoginRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

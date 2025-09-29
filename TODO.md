@@ -1,0 +1,4 @@
+- [x] Create api/users/tests/test_permissions.py for testing permissions on user views
+- [x] Create api/users/tests/test_authentication.py for testing login authentication
+- [x] Create api/products/tests/test_permissions.py for testing permissions on product views
+- [x] Run tests to verify functionality
