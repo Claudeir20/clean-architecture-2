@@ -7,12 +7,11 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from core.interfaces.usecase.criar_produto_usecase import(
     CreateProductUseCase,
     ListProductsUseCase,
-    CreateProductRequest,
-    CreateProductResponse,
     GetProductByIdUseCase,
     GetProductByIdRequest,
     ListProductsRequest
 )
+
 class ProductListAPIView(generics.ListAPIView):
     queryset = ProductModel.objects.all()
     permission_classes = [IsAuthenticated]

@@ -9,6 +9,17 @@ class UserRepository(ABC):
     def create(self, user: User) -> User:
         """Cria novo usuário"""
         pass
+
+    @abstractmethod
+    def delete(self, user_id: str) -> None:
+        """Deleta um usuário"""
+        pass
+
+    @abstractmethod
+    def update(self, user: User) -> User:
+        """Atualiza um usuário"""
+        pass
+
     
     @abstractmethod
     def get_all(self, user: User) -> List[User]:

@@ -11,6 +11,28 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 
 class LoginAPIView(APIView):
+    """
+    API view responsável por autenticar usuários e retornar tokens de acesso.
+
+    Método:
+    - POST: Recebe credenciais de login (e-mail e senha) e retorna tokens de autenticação.
+
+    Permissões:
+    - Acesso liberado para qualquer usuário (AllowAny), inclusive não autenticado.
+
+    Fluxo:
+    1. Valida os dados recebidos via `LoginRequestSerializer`.
+    2. Cria uma instância de `LoginUserRequest` com e-mail e senha.
+    3. Executa o caso de uso `LoginUserUseCase`, que:
+    - Verifica se o usuário existe.
+    - Valida a senha.
+    - Gera tokens de acesso e refresh via `DjangoAuthGateway`.
+    4. Serializa a resposta com `LoginResponseSerializer`.
+    5. Retorna os tokens e dados do usuário autenticado.
+
+    Tratamento de erros:
+    - Se as credenciais forem inválidas, retorna HTTP 401 com mensagem de erro.
+    """
     permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         serializer = LoginRequestSerializer(data=request.data)

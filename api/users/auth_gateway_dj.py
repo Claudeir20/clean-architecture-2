@@ -8,7 +8,18 @@ from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
 from django.utils import timezone
 from oauth2_provider.models import AccessToken, Application, RefreshToken
+
+
 class DjangoAuthGateway(AuthGateway):
+    """
+    Implementação da interface de autenticação que conecta a camada de domínio
+com os mecanismos de segurança e geração de tokens do Django e OAuth2.
+
+    Responsabilidades:
+    - Verificar senhas.
+    - Alterar senhas.
+    - Gerar tokens de acesso e refresh para autenticação via OAuth2.
+    """
     def check_password(self, user_id: str, password: str) -> bool:
         try:
             user = UserModel.objects.get(id=user_id)
