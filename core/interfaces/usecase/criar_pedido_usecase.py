@@ -4,7 +4,6 @@ from core.domain.entities.product import Product
 from core.domain.entities.user import User
 from dataclasses import dataclass
 from typing import List
-from builtins import PermissionError
 
 @dataclass
 class CreateOrderRequest:
@@ -12,6 +11,7 @@ class CreateOrderRequest:
     product: Product
     quantity: int
     subtotal: float
+    status: str
 
 @dataclass
 class CreateOrderResponse:
@@ -20,6 +20,7 @@ class CreateOrderResponse:
     product: str
     quantity: int
     subtotal: float
+    status: str
     
 class CreateOrderUseCase:
     def __init__(self, order_repository: OrderRepository):
@@ -39,7 +40,8 @@ class CreateOrderUseCase:
             owner=create_order.owner,
             product=create_order.product,
             quantity=create_order.quantity,
-            subtotal=create_order.subtotal
+            subtotal=create_order.subtotal,
+            status = create_order.status,
         )
 
 
@@ -120,7 +122,8 @@ class ListOrderUseCase:
                 owner=order.owner,
                 product=order.product.name,
                 quantity=order.quantity,
-                subtotal=order.get_subtotal
+                subtotal=order.get_subtotal,
+                status = order.status,
             ) for order in visible_orders
         ]
 

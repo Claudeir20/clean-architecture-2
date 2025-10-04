@@ -10,6 +10,20 @@ class ProductRepository(ABC):
         pass
     
     @abstractmethod
+    def delete(self, produc_id: str) -> Product:
+        """Deleta um Produto.
+        -  vai ser implementado na camada de infraestrutura
+        """
+        pass
+    
+    @abstractmethod
+    def update(self, produc_id: str) -> None:
+        """Atualiza um Produto ja existente.
+        -  vai ser implementado na camada de infraestrutura
+        """
+        pass
+    
+    @abstractmethod
     def get_all(self) -> List[Product]:
         """Lista todos os produtos"""
         pass

@@ -13,6 +13,24 @@ class DjangoProductRepository(ProductRepository):
         )
         return product.to_domain()
 
+    def delete(self, produc_id: Product) -> None:
+        delete_product = ProductModel.objects.filter(id= produc_id).delete()
+        if delete_product == 0:
+            raise ValueError("Produto não encontrado")
+
+
+    def update(self, product: Product) -> Product:
+        model = ProductModel.objects.get(id=product.id)
+
+        model.name = product.name
+        model.price = product.price
+        model.stock = product.stock
+        model.is_active = product.is_active
+
+        model.save()
+        return model.to_domain()
+
+
     def get_all(self) -> list[Product]:
         return [product_model.to_domain() for product_model in ProductModel.objects.all()]
 

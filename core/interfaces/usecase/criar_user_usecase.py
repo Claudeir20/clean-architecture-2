@@ -209,28 +209,6 @@ class GetUserByEmailUseCase:
             is_staff=user.is_staff,
             is_superuser=user.is_superuser
         )
-        
-# @dataclass
-# class DeleteUserRequest:
-#     user_id: str
-
-# @dataclass
-# class DeleteUserResponse:
-#     success: bool
-    
-# class DeleteUserUseCase:
-#     def __init__(self, user_repository: UserRepository):
-#         self.user_repository = user_repository
-    
-#     def execute(self, request: DeleteUserRequest) -> DeleteUserResponse:
-#         user = self.user_repository.delete(request.user_id)
-
-#         if not user:
-#             raise ValueError("Usuário não encontrado")
-        
-#         return DeleteUserResponse(success=True)
-
-
 
 @dataclass
 class LoginUserRequest:
